@@ -11,8 +11,8 @@ test('Basic querying', () => {
     var numbers = Observable.range(1, 100);
 
     numbers
-        .filter(x => { return x % __ === 0 })
-        .map(x => { return x.toString() })
+        .filter(x => x % 11 === 0)
+        .map(x => x.toString())
         .toArray()
         .subscribe(strings.push.bind(strings));
 
@@ -24,9 +24,9 @@ test('querying over events', () => {
 
     var e = new EventEmitter();
     Observable.fromEvent(e, 'click')
-        .filter(function(click) { return click.x === click.y })
-        .map(function(click) { return __ + __; })
-        .subscribe(x => { results = x; });
+        .filter(click => click.x === click.y)
+        .map(click => click.x + click.y)
+        .subscribe(x => results = x);
 
     e.emit('click', { x: 100, y: 50 });
     e.emit('click', { x: 75, y: 75 });
@@ -38,7 +38,7 @@ test('querying over events', () => {
 test('buffering with count and skip', () => {
     var results = [];
     Observable.range(1, 10)
-        .bufferWithCount(__, __)
+        .bufferWithCount(5, 5)
         .subscribe(results.push.bind(results));
 
     equal('12345', results[0].join(''));
