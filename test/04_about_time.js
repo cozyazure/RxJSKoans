@@ -10,7 +10,7 @@ var __ = 'Fill in the blank';
 asyncTest('launching an event via a scheduler', () => {
     var state = null;
     var received = '';
-    var delay = 600; // Fix this value
+    var delay = 500; // Fix this value
     Scheduler.default.scheduleFuture(state, delay, function(scheduler, state) {
         received = 'Finished';
     });
@@ -23,7 +23,7 @@ asyncTest('launching an event via a scheduler', () => {
 
 asyncTest('launching an event in the future', () => {
     var received = null;
-    var time = __;
+    var time = 500;
 
     var people = new Subject();
     people.delay(time).subscribe(x => { received = x; });
@@ -32,13 +32,13 @@ asyncTest('launching an event in the future', () => {
     setTimeout(() => {
         equal('Godot', received);
         start();
-    }, 500)
+    }, 800) // as long as it is greater than the delay stated up, then is okay
 });
 
 asyncTest('a watched pot', () => {
     var received = '';
     var delay = 500;
-    var timeout = __;
+    var timeout = 502;
     var timeoutEvent = Observable.just('Tepid');
 
     Observable
@@ -68,7 +68,7 @@ asyncTest('you can place a time limit on how long an event should take', () => {
     }, 3000);
 
     setTimeout(() => {
-        equal(__, received.join(', '));
+        equal('Started, Tepid', received.join(', '));
         start();
     }, 4000);
 });
@@ -92,7 +92,7 @@ asyncTest('debouncing', () => {
         events.onNext('rxjs');
 
         setTimeout(() => {
-            equal(__, received.join(' '));
+            equal('from rxjs', received.join(' '));
             start();
         }, 120);
     }, 120);
@@ -118,7 +118,7 @@ asyncTest('buffering', () => {
         events.onNext('s');
 
         setTimeout(() => {
-            equal(__, received.join(' '));
+            equal('RxJS Rocks', received.join(' '));
             start();
         }, 120);
     }, 120);
@@ -141,7 +141,7 @@ asyncTest('time between calls', () => {
         setTimeout(() => {
             events.onNext('down');
 
-            equal(__, received.join(' '));
+            equal('slow down', received.join(' '));
             start();
         }, 120);
     }, 120);
@@ -155,7 +155,7 @@ asyncTest('results can be ambiguous timing', () => {
     fst.amb(snd).subscribe(x => { results = x; });
 
     setTimeout(() => {
-        equal(results, __);
+        equal(results, -1);
         start();
     }, 600);
 });
